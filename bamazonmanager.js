@@ -1,16 +1,19 @@
-// Working on finishing the project
-//   Will get the product id
-//   Get quantity
-//   check qty of productid
-//   
-//   if (productidQty > qtyToPurchase)  {
-//     tempQtyLeft = productidQty - qtyToPurchase;
-//     fulfillOrder -> which will update the stock quantity for the item_id to tempQtyLeft
-//    }
-//            else {
-//      console.log("Insufficient Quantity")
-//   }
-// Load the NPM Package inquirervar productId = 0;
+//	Create a new Node application called bamazonManager.js. Running this application will:
+//	List a set of menu options:
+//	-   View Products for Sale
+//	-   View Low Inventory
+//	-   Add to Inventory
+//	-   Add New Product
+//
+//	If a manager selects View Products for Sale, the app should list every available item: the item IDs, 
+//       names, prices, and quantities.
+//	If a manager selects View Low Inventory, then it should list all items with an inventory count lower than five.
+//	If a manager selects Add to Inventory, your app should display a prompt that will let the manager "add more" 
+//       of any item currently in the store.
+//	If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.
+________________________________________
+
+
 
 var qtyToPurchase = 5;
 var qtyInStock = 0;
@@ -126,41 +129,47 @@ function displayProducts() {
 }
 
 
+
+
+
+
+
+
+
+// ========================================================================
 // Load the NPM Package inquirer
 var inquirer = require("inquirer");
 
-// Create a "Prompt" with a series of questions.
-inquirer
-    .prompt([
-        // Prompt user for id of product to purchase
-        {
-            type: "input",
-            message: "Product ID to purchase?",
-            name: "productId"
-        },
+// Created a series of questions
+inquirer.prompt([
 
-        // Prompt user for quantity of product to purchase
-        {
-            type: "input",
-            message: "Quantity to buy?",
-            name: "productQty"
-        },
-        // Here we ask the user to confirm.
-        {
-            type: "confirm",
-            message: "Are you sure:",
-            name: "confirm",
-            default: true
-        }
-    ])
-    .then(function(inquirerResponse) {
-        // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
-        if (inquirerResponse.confirm) {
-            console.log("\nProduct Id entered: " + inquirerResponse.productId);
-            console.log("\nProduct Quantity to purchase: " + inquirerResponse.productQty);
-            checkProductQty(inquirerResponse.productId, inquirerResponse.productQty)
-            displayProducts();
-        } else {
-            console.log("\nThat's okay, come again when you are more sure.\n");
-        }
-    });
+    {
+        type: "list",
+        name: "options",
+        message: "What task would you like to perform?",
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+    }
+
+]).then(function(inquirerResponse) {
+
+    // If manager wishes to View Products for Sale
+    if (inquirer.inquirerResponse === "View Products for Sale") {
+        //Execute View Products for Sale logic    
+        displayProducts()
+    }
+    // If manager wishes to View Low Inventory
+    else
+    if (inquirer.inquirerResponse === "View Low Inventory") {
+        //Execute View Log Inventory
+    }
+    // If manager wishes to Add to Inventory
+    else
+    if (inquirer.inquirerResponse === "Add to Inventory") {
+        //Execute Add to Inventory Logic
+    }
+    // If manager wishes to Add New Product
+    else
+    if (inquirer.inquirerResponse === "Add to Product") {
+        //Execute View Log Inventory
+    }
+});
