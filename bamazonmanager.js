@@ -11,9 +11,9 @@
 //	If a manager selects Add to Inventory, your app should display a prompt that will let the manager "add more" 
 //       of any item currently in the store.
 //	If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.
-// Load the NPM Package inquirervar productId = 0;
+// Load the NPM Package 
 
-var qtyToPurchase = 5;
+//var qtyToPurchase = 5;
 var qtyInStock = 0;
 var quitFlag = false;
 var newStockQty = 0;
@@ -42,20 +42,6 @@ connection.connect(function(err) {
     if (err) throw err;
 
     console.log('Database connected.');
-
-
-    //updateProduct();
-
-    //createProduct();
-
-    //deleteProduct();
-
-    //displayProducts();
-    //checkProductQty(1);
-    //console.log("Qty In Stock from selectProductQty call: " + aQtyInStock);
-    //updateProductQty(6);
-
-
 
 });
 
@@ -101,7 +87,6 @@ function checkProductQty(anItem_id, qtyToPurchase) {
         }
     });
 
-    //displayProducts();
 } //end function
 
 
@@ -145,13 +130,13 @@ function displayLowInventory() {
 
         console.log(table.toString());
 
-        connection.end();
+        //connection.end();
 
     })
 } //end function displayLowInventory()
 
 
-function addToInventory(anItem_id, aQuantity) {
+function updateInventoryQty(anItem_id, aQuantity) {
     // get current stock_quantity
     var sql = "SELECT * FROM ProductsTable WHERE item_id = " + anItem_id;
     console.log("SQL: " + sql);
@@ -179,19 +164,27 @@ function addToInventory(anItem_id, aQuantity) {
 } //end function addToInventory()
 
 
+function insertNewProduct(aProduct, aPrice, aDepartment, aQuantity) {
+
+    var sql = "INSERT INTO ProductsTable (product_name, price, department_name, stock_quantity)" +
+        " VALUES('" + aProduct + "','" + aPrice + "','" + aDepartment + "','" + aQuantity + "')";
+    connection.query(sql, function(err, result) {
+        if (err) {
+            console.log("Error: " + err);
+            throw err;
+        } else {
+            console.log(result.affectedRows + " record(s) updated");
+        }
+
+    });
+
+} //end insertNewProduct
 
 
-// Load the NPM Package inquirer
-var inquirer = require("inquirer");
 
-// ========================================================================
-// Load the NPM Package inquirer
-var inquirer = require("inquirer");
 
 // Created a series of questions
-inquirer.prompt([
-
-    {
+inquirer.prompt([{
         type: "list",
         name: "options",
         message: "What task would you like to perform?",
@@ -218,14 +211,14 @@ inquirer.prompt([
         // Create a "Prompt" with a series of questions.
         inquirer
             .prompt([
-                // Prompt user for id of product to purchase
+                // Prompt user for id of product to update
                 {
                     type: "input",
                     message: "Product ID ",
                     name: "productId"
                 },
 
-                // Prompt user for quantity of product to purchase
+                // Prompt user for quantity of product to update
                 {
                     type: "input",
                     message: "Quantity to Add?",
@@ -244,16 +237,54 @@ inquirer.prompt([
                 if (inquirerResponse.confirm) {
                     console.log("\nProduct Id entered: " + inquirerResponse.productId);
                     console.log("\nProduct Quantity to Add: " + inquirerResponse.productQty);
-                    addToInventory(inquirerResponse.productId, parseInt(inquirerResponse.productQty));
+                    updateInventoryQty(inquirerResponse.productId, parseInt(inquirerResponse.productQty));
                     displayProducts();
                 } else {
                     console.log("\nThat's okay, come again when you are more sure.\n");
                 }
+                return;
             });
     }
     // If manager wishes to Add New Product
     else
-    if (inquirerResponse.options === "Add to Product") {
-        //Execute View Log Inventory
+    if (inquirerResponse.options === "Add New Product") {
+        inquirer
+            .prompt([
+                // Prompt user for id of new product to add
+                {
+                    type: "input",
+                    message: "Enter Product Name?",
+                    name: "productName"
+                },
+                // Prompt user for price of new product to add
+                {
+                    type: "input",
+                    message: "Enter Product Price?",
+                    name: "price"
+                },
+
+                // Prompt user for quantity of product to purchase
+                {
+                    type: "input",
+                    message: "Enter Quantity?",
+                    name: "productQty"
+                },
+                {
+                    type: "list",
+                    name: "options",
+                    message: "Indicate the department for this new product ",
+                    choices: ["Electronics", "Home", "Garden", "Furniture", "Automotive", "Bed and Bath"]
+                }
+            ])
+            .then(function(inquirerResponse) {
+                // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
+                console.log("\nNew Product Name: " + inquirerResponse.productName);
+                console.log("\nNew Product Price: " + inquirerResponse.price);
+                console.log("\nProduct Quantity to Add: " + inquirerResponse.productQty);
+                console.log("\nDepartment: " + inquirerResponse.options);
+                insertNewProduct(inquirerResponse.productName, parseFloat(inquirerResponse.price), inquirerResponse.options, parseInt(inquirerResponse.productQty));
+                displayProducts();
+                return;
+            });
     }
 });
