@@ -247,6 +247,42 @@ inquirer
         } //end View Product Sales by Department
         else {
             if (inquirerResponse.options === "Create New Department") {
+                // Create a "Prompt" with a series of questions.
+                //viewProductSalesbyDept();
+                inquirer
+                    .prompt([
+                        // Prompt user for id of product to purchase
+                        {
+                            type: "input",
+                            message: "Enter new Department Name?",
+                            name: "departmentName"
+                        },
+
+                        // Prompt user for quantity of product to purchase
+                        {
+                            type: "input",
+                            message: "Enter department over-head-costs?",
+                            name: "overheadcosts"
+                        },
+                        // Here we ask the user to confirm.
+                        {
+                            type: "confirm",
+                            message: "Are you sure:",
+                            name: "confirm",
+                            default: true
+                        }
+                    ])
+                    .then(function(inquirerResponse) {
+                        // If the inquirerResponse confirms, we displays the inquirerResponse's username and pokemon from the answers.
+                        if (inquirerResponse.confirm) {
+                            console.log("\n\nNew Department Name entered: " + inquirerResponse.departmentName);
+                            console.log("\n\nNew Department Overhead Costs: " + inquirerResponse.overheadcosts);
+                            createNewDepartment(inquirerResponse.departmentName, parseFloat(inquirerResponse.overheadcosts));
+                            viewProductSalesbyDept();
+                        } else {
+                            console.log("\nThat's okay, come again when you are more sure.\n");
+                        }
+                    });
 
             }
         } //end Create New Department

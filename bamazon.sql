@@ -104,4 +104,6 @@ SET product_sales = 10000
 WHERE item_id = 13;
 
 
-Select departmentstable.department_id, departmentstable.department_name, productstable.product_sales - departmentstable.over_head_costs as "total Profit", departmentstable.over_head_costs from bamazon.departmentstable LEFT JOIN bamazon.productstable on bamazon.departmentstable.department_id = bamazon.productstable.department_id;
+Select departmentstable.department_id, departmentstable.department_name, 
+productstable.product_sales - departmentstable.over_head_costs as "total Profit", departmentstable.over_head_costs 
+from bamazon.departmentstable LEFT JOIN bamazon.productstable on bamazon.departmentstable.department_id = bamazon.productstable.department_id group by department_id;
