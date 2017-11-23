@@ -6,8 +6,8 @@ USE bamazon;
 
 CREATE TABLE ProductsTable (
   item_id INT NOT NULL auto_increment,
-  product_name VARCHAR(300) NULL,
-  department_name VARCHAR (100) NULL,
+  product_name VARCHAR(100) NULL,
+  department_name VARCHAR (50) NULL,
   price DEC(10, 4),
   stock_quantity INT,
   product_sales INT,
@@ -37,16 +37,16 @@ INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
 VALUES ("Echo", "Electronics", 99.00, 200);
 
 INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
-VALUES ("Calphalon Classic Stainless Steel Cookware Set, 10-Piece", "Home", 148.00, 50);
+VALUES ("Calphalon Classic 10-Piece Cookware", "Home", 148.00, 50);
 
 INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
-VALUES ("BLACK+DECKER 7-Quart Digital Slow Cooker with Chalkboard Surface, Slate, SCD4007", "Home", 33.00, 250);
+VALUES ("BLACK+DECKER 7-Quart Digital Slow Cooker", "Home", 33.00, 250);
 
 INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
-VALUES ("DEWALT DCCS670X1 FLEXVOLT 60V MAX Brushless Chainsaw, 3.0AH battery", "Garden", 500.00, 100);
+VALUES ("DEWALT DCCS670X1 FLEXVOLT 60V MAX Brushless Chainsaw", "Garden", 500.00, 100);
 
 INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
-VALUES ("Landmann 26364 23-1/2-Inch Savannah Garden Light Fire Pit, Black", "Home", 80.00, 40);
+VALUES ("Landmann 26364 23-1/2-Inch Savannah Garden Light Fire Pit", "Home", 80.00, 40);
 
 INSERT INTO ProductsTable (product_name, department_name, price, stock_quantity)
 VALUES ("Crown Mark Tyler 4-Piece Counter Height Table Set", "Furniture", 209.47, 100);
@@ -84,4 +84,24 @@ INSERT INTO DepartmentsTable (department_name)
 
 Select * from productstable;
 
-Select * from departmentstable;
+Select * from bamazon.departmentstable;
+
+Select * from bamazon.ProductsTable;
+
+
+Delete from bamazon.ProductsTable where item_id = 11;
+
+UPDATE bamazon.ProductsTable
+SET department_id = 5
+WHERE item_id = 13;
+
+UPDATE bamazon.departmentstable
+SET over_head_costs = 25000
+WHERE department_id = 6;
+
+UPDATE bamazon.ProductsTable
+SET product_sales = 10000
+WHERE item_id = 13;
+
+
+Select departmentstable.department_id, departmentstable.department_name, productstable.product_sales - departmentstable.over_head_costs as "total Profit", departmentstable.over_head_costs from bamazon.departmentstable LEFT JOIN bamazon.productstable on bamazon.departmentstable.department_id = bamazon.productstable.department_id;
